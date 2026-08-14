@@ -1,0 +1,6 @@
+name: consumer
+requires:
+  - greeting
+
+# The consumer intentionally does not name the greeter provider.
+# It discovers a provider through the capability registry.
