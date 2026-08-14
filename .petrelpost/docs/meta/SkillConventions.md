@@ -26,7 +26,7 @@ Skill 是一个可独立接入项目的能力模块。它可以拥有自己的�
 .petrelpost/
 └── docs/
     ├── collaboration/roles/   ← role-architecture（历史路径例外，见下方"已知待整改项"）
-    ├── decisions/             ← 决策归档（待接入）
+    ├── decisions/             ← 决策归档（已对齐，见下方"已知待整改项"）
     ├── okr/                   ← OKR+PDCA（待接入）
     ├── maintenance/           ← Rest 体系
     └── meta/
@@ -35,6 +35,8 @@ Skill 是一个可独立接入项目的能力模块。它可以拥有自己的�
 ```
 
 新建 Skill 一律遵循 `.petrelpost/docs/<domain>/` 的路径规则。**注意拼写是 `petrelpost`（petrel=海燕），不是 `petrolpost`（petrol=汽油）**——decision-archivist 曾在注册时误写成后者，新建/迁移 Skill 时留意核对，避免同一项目里出现两个几乎同名但实际不同的命名空间。
+
+**本条只约束持久化内容的路径归属，不约束文件内部的存储格式**（YAML/JSON/纯 Markdown 等由各 Skill 自行决定，只要落在自己的目录内即可；例如 decision-archivist 用 YAML 存源真值、渲染出 Markdown 展示，这不是对本条的例外，而是本条本来就没管到这一层）。
 
 **Entry-point marker 同样要套命名空间**，格式为 `petrelpost:<skill-name>:start` / `petrelpost:<skill-name>:end`，写入 `CLAUDE.md` / `AGENTS.md` 等文件时使用，避免与其他体系的 marker 撞名：
 
