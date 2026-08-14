@@ -1,0 +1,286 @@
+# 源真值：已确认/待补全的正式决策记录（结构化）
+# 本次由 decision-archivist 模式二（全量梳理）产出，材料范围：当前对话全文
+decisions:
+  - id: DEC-20260815-01
+    status: confirmed
+    created_at: "2026-08-15T09:00:00"
+    from_signal: null
+
+    trigger:
+      summary: "用户提出需要在整体文档结构上再加一层命名空间，对应其 GitHub 用户名，以防止与其他 Skill 体系共同修改项目时产生冲突"
+      source: "本对话：用户消息'我需要为整体文档结构再加一层.petrelpost/，对应我的github名字，防止与其他skill体系共同修改项目时造成冲突'"
+
+    change:
+      from: "各领域目录（角色、决策、OKR、维护）直接建在项目 docs/ 下（如 docs/collaboration/roles/）"
+      to: ".petrelpost/ 命名空间层，所有持久化内容统一放在 .petrelpost/docs/<domain>/ 下；entry-point marker 同步加上 petrelpost:<skill>: 前缀"
+
+    rationale:
+      summary: "防止项目中同时存在其他团队或其他 Agent 体系产生的 docs/ 或 marker 时发生路径/命名冲突；.petrelpost/ 不只是目录前缀，而是这套 Agent 组织体系自己的持久化状态空间"
+      待补全: false
+
+    related_elements:
+      - type: concept
+        ref: "命名空间"
+      - type: file
+        ref: "SkillConventions.md"
+      - type: file
+        ref: "README.md"
+      - type: file
+        ref: "AGENTS.md"
+
+    planned_follow_ups:
+      - action: "role-architecture 路径迁移到 .petrelpost/docs/collaboration/roles/，entry-point marker 加 petrelpost: 前缀"
+        status: open
+
+    supersedes: null
+    superseded_by: null
+    confidence: explicit
+    source: "本对话"
+
+  - id: DEC-20260815-02
+    status: confirmed
+    created_at: "2026-08-15T09:15:00"
+    from_signal: null
+
+    trigger:
+      summary: "用户指出'扫描→登记→执行→写 Run-XXX.md'并非唯一路径，更可能的路径是 Skill 主动查看项目是否有 Rest 机制、学习最新规则、调用 Rest 方法登记，Rest 系统无感执行"
+      source: "本对话：用户消息'扫描→登记→执行→写runs/Run-XXX.md的变换可能并不是唯一的路径，更可能的路径是skill有需要，查看是否项目有rest机制……'"
+
+    change:
+      from: "Rest 主动扫描所有已装 Skill 的声明文件（如各 Skill references/ 下的 maintenance-task.md）来发现维护任务"
+      to: "Skill 判断自身需要维护时，主动检查 Rest 是否已装、读取当前登记格式后自行写入登记条目；Rest 不再读取其他 Skill 的内部目录，只负责后续触发/执行/留痕"
+
+    rationale:
+      summary: "原设计要求 Rest 了解其他 Skill 的内部目录结构才能扫描，这本身构成了不必要的耦合；改为拉取式注册后，Rest 只需认得登记格式，不需要知道任何 Skill 的实现细节"
+      待补全: false
+
+    related_elements:
+      - type: concept
+        ref: "Rest体系"
+      - type: concept
+        ref: "MaintenanceRegistry"
+
+    planned_follow_ups: []
+
+    supersedes: null
+    superseded_by: null
+    confidence: explicit
+    source: "本对话"
+
+  - id: DEC-20260815-03
+    status: confirmed
+    created_at: "2026-08-15T09:40:00"
+    from_signal: null
+
+    trigger:
+      summary: "外部引入的评审意见指出，此前设计中未显式规定'不同 Skill 维护的领域事实是否可能被多处记录、谁说了算'，存在'双重真相'风险（例如 Task 状态可能同时出现在 TaskRegistry 和 Rest 的 Run 记录里）"
+      source: "本对话：评审文档指出'谁拥有真相'的缺口，用户认可后采纳"
+
+    change:
+      from: "未显式规定跨 Skill 状态归属规则"
+      to: "确立 Canonical Owner 原则：每种领域事实只能有一个权威归属 Skill；其他 Skill（包括 Rest）不能直接改写不属于自己的权威状态字段，只能引用/快照并显式标注'非权威值'"
+
+    rationale:
+      summary: "多个 Skill 各自维护 Registry/Overview 类文件时，同一事实（如某个 Task 的状态）很容易被重复记录且不同步；不确立单一权威来源，Rest 或任何 Skill 越多，数据踩踏风险越高"
+      待补全: false
+
+    related_elements:
+      - type: concept
+        ref: "Canonical Owner"
+      - type: skill
+        ref: "role-architecture"
+      - type: skill
+        ref: "decision-archivist"
+
+    planned_follow_ups: []
+
+    supersedes: null
+    superseded_by: null
+    confidence: explicit
+    source: "本对话"
+
+  - id: DEC-20260815-04
+    status: superseded
+    created_at: "2026-08-15T10:00:00"
+    from_signal: null
+
+    trigger:
+      summary: "用户指出 Rest 体系规则可能不断更新，需要给其他 Skill 提供'学习'当前规则的机制，而不仅是一次性接入"
+      source: "本对话：用户消息'因为Rest体系规则可能不断更新，Rest应提供其他Skill学习的机制'"
+
+    change:
+      from: "只用一个 schema_version 字段 + ChangeLog 覆盖'怎么接入 Rest'"
+      to: "拆分为 SchemaVersion.md（怎么说——字段格式）与 RestPolicy.md（现在关心什么——行为哲学/触发逻辑的变化，可能不改字段但改判断逻辑），Skill 注册时需同时学习两者"
+
+    rationale:
+      summary: "评审指出把'学习 Rest 规则'等同于 schema 版本迁移过窄；行为哲学的变化（如触发方式从固定周期改为状态变化触发）不一定伴随字段变化，需要单独的 Policy 文档承载"
+      待补全: false
+
+    related_elements:
+      - type: concept
+        ref: "Rest学习机制"
+      - type: decision
+        ref: DEC-20260815-06
+
+    planned_follow_ups: []
+
+    supersedes: null
+    superseded_by: DEC-20260815-06
+    confidence: explicit
+    source: "本对话"
+
+  - id: DEC-20260815-05
+    status: confirmed
+    created_at: "2026-08-15T10:10:00"
+    from_signal: null
+
+    trigger:
+      summary: "评审指出若把 Rest 定义为'登记→调度→执行→归档'的闭环，很容易最终变成一个纯粹的维护任务 Cron/scheduler，偏离用户最初'系统空闲时'这一表述里的核心含义"
+      source: "本对话：评审文档第二节'Rest 到底是什么'，用户认可后采纳"
+
+    change:
+      from: "Rest = 维护任务调度系统，Registry（登记表）是核心"
+      to: "Rest = 对'随时间可能变得不健康的状态'进行观察的机制（时间维度观察层）；Registry 只是 Rest 的数据结构，不是 Rest 本身"
+
+    rationale:
+      summary: "更贴合用户最初的表述——'系统空闲时，可自动/手动触发的管理型、分析型任务……用于检查系统状态、整理数据'，重点在'观察系统健康'而不是'把任务跑完'"
+      待补全: false
+
+    related_elements:
+      - type: concept
+        ref: "Rest体系"
+
+    planned_follow_ups: []
+
+    supersedes: null
+    superseded_by: null
+    confidence: explicit
+    source: "本对话"
+
+  - id: DEC-20260815-06
+    status: confirmed
+    created_at: "2026-08-15T10:45:00"
+    from_signal: null
+
+    trigger:
+      summary: "用户明确表示不追求设计到完美再动手，担心讨论持续深化会导致'发现问题→加原则→加抽象层→加协议→加版本管理→……→拥有一个非常漂亮的、还没开始使用的系统'的循环"
+      source: "本对话：用户消息'我需要控制，原因是我不想设计到完美才干……'，随后第二份引入的评审文档进一步论证应收紧为 V1"
+
+    change:
+      from: "总纲尝试完整覆盖讨论中出现的多项原则（Skill 七维模型、Rest 三层拆分、Finding 四级分级、跨域操作四级权限模型、Schema+Policy 双文件版本化机制等，共约 9 条）"
+      to: "V1 只固化 5 条已验证必要、且不定就会冲突的硬规则（.petrelpost 命名空间 / Canonical Owner / Rest 是可选的时间性能力，判断标准仅一句话 / Rest 最小学习闭环，不预设 Schema+Policy 拆分或 /rest-sync / 自动行为必须留痕）；其余讨论过的方向全部降级为文末'当前理解'区，仅供未来参考，不作硬性规范"
+
+    rationale:
+      summary: "总纲约束应描述已被实践证明必要的东西，而不是提前解决所有可能的问题；这是一个会随实际使用演化的 Agent 组织体系，不是一次性定型的软件架构，宁可先跑起来用真实反馈暴露设计缺陷，再迭代规则"
+      待补全: false
+
+    related_elements:
+      - type: file
+        ref: "SkillConventions.md"
+      - type: decision
+        ref: DEC-20260815-04
+
+    planned_follow_ups:
+      - action: "状态枚举风格（驼峰 vs 带空格）不强制统一，role-architecture 保留现状，新 Skill 可自行选择，等真正出问题再回来处理"
+        status: dropped
+
+    supersedes: DEC-20260815-04
+    superseded_by: null
+    confidence: explicit
+    source: "本对话"
+
+  - id: DEC-20260815-07
+    status: confirmed
+    created_at: "2026-08-15T11:30:00"
+    from_signal: null
+
+    trigger:
+      summary: "用户要求合理规划项目规则系统，指出具体待办事项应独立成文，在项目入口或 README 中只做引用"
+      source: "本对话：用户消息'合理规划项目规则系统。比如具体代办事项应独立成文，在项目入口或Readme中只有引用。'"
+
+    change:
+      from: "待办事项（已知待整改项）分别写在 SkillConventions.md 和 README.md 两处"
+      to: "待办事项独立为 Backlog.md，作为唯一权威来源；SkillConventions.md 和 README.md 都只保留一行引用，不复制内容"
+
+    rationale:
+      summary: "两处维护同一份待办清单，正是 Canonical Owner 原则要避免的'双重真相'问题在总纲自身文档上的体现——每次更新都要改两处，迟早会漏改导致不一致"
+      待补全: false
+
+    related_elements:
+      - type: file
+        ref: "Backlog.md"
+      - type: file
+        ref: "SkillConventions.md"
+      - type: file
+        ref: "README.md"
+      - type: decision
+        ref: DEC-20260815-03
+
+    planned_follow_ups: []
+
+    supersedes: null
+    superseded_by: null
+    confidence: explicit
+    source: "本对话"
+
+  - id: DEC-20260815-08
+    status: confirmed
+    created_at: "2026-08-15T12:10:00"
+    from_signal: null
+
+    trigger:
+      summary: "用户提问是否需要一个 AGENTS.md；讨论中确认后续多个具体 Skill 的修改会另开新对话处理，而新对话不会自动获得本对话的推理过程"
+      source: "本对话：用户消息'需要一个Agents.md吗？'"
+
+    change:
+      from: "只有 README.md（给人看）作为项目入口"
+      to: "新增 AGENTS.md 作为 Agent 专属入口文件：强制指向 SkillConventions.md 和 Backlog.md，并承载 entry-point marker 区块；README.md 保留给人类读者，两者互相引用不重复内容"
+
+    rationale:
+      summary: "entry-point marker 机制本来就要写进 CLAUDE.md/AGENTS.md 一类文件，但项目此前没有这个载体；同时新对话需要一个约定俗成的入口，进来就知道先读哪些文件，不必每次由用户手动搬运规则"
+      待补全: false
+
+    related_elements:
+      - type: file
+        ref: "AGENTS.md"
+      - type: file
+        ref: "README.md"
+      - type: decision
+        ref: DEC-20260815-01
+
+    planned_follow_ups: []
+
+    supersedes: null
+    superseded_by: null
+    confidence: explicit
+    source: "本对话"
+
+  - id: DEC-20260815-09
+    status: confirmed
+    created_at: "2026-08-15T14:20:00"
+    from_signal: null
+
+    trigger:
+      summary: "此前检查 decision-archivist 时，曾将其存储格式（YAML + 渲染 DECISION_LOG.md）与总纲设想的纯 Markdown 条目文件路线的差异列为'待专门讨论的分歧'；复核时发现 SkillConventions.md 硬规则 1 本身从未规定文件内部存储格式"
+      source: "本对话：检查 decision-archivist 迁移结果后，用户要求执行归档，复核过程中发现的澄清"
+
+    change:
+      from: "把 decision-archivist 使用 YAML 存储视为需要'申请例外'或'专门讨论'的问题"
+      to: "明确硬规则 1（.petrelpost 命名空间）只约束持久化内容的路径归属，不约束文件内部存储格式；decision-archivist 用 YAML 存源真值、渲染出 Markdown 展示，不构成对硬规则的例外，而是硬规则本来就没有管辖这一层"
+
+    rationale:
+      summary: "避免以后再有 Skill 把'自己用了非纯 Markdown 的存储格式'误读成与总纲冲突，浪费不必要的讨论"
+      待补全: false
+
+    related_elements:
+      - type: file
+        ref: "SkillConventions.md"
+      - type: skill
+        ref: "decision-archivist"
+
+    planned_follow_ups: []
+
+    supersedes: null
+    superseded_by: null
+    confidence: explicit
+    source: "本对话"
