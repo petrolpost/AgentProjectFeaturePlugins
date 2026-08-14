@@ -21,7 +21,8 @@
     ├── okr/                   ← OKR+PDCA（待接入）
     ├── maintenance/           ← Rest 体系（空闲维护，待接入）
     └── meta/
-        └── SkillConventions.md ← 生态总纲，所有 Skill 共同遵循
+        ├── SkillConventions.md ← 生态总纲，所有 Skill 共同遵循
+        └── Backlog.md           ← 待办事项，唯一权威来源
 ```
 
 ## 现有 Skill
