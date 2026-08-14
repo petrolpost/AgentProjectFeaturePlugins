@@ -34,7 +34,7 @@ Skill 是一个可独立接入项目的能力模块。它可以拥有自己的�
         └── Backlog.md          ← 待办事项（状态，唯一权威来源）
 ```
 
-新建 Skill 一律遵循 `.petrelpost/docs/<domain>/` 的路径规则。
+新建 Skill 一律遵循 `.petrelpost/docs/<domain>/` 的路径规则。**注意拼写是 `petrelpost`（petrel=海燕），不是 `petrolpost`（petrol=汽油）**——decision-archivist 曾在注册时误写成后者，新建/迁移 Skill 时留意核对，避免同一项目里出现两个几乎同名但实际不同的命名空间。
 
 **Entry-point marker 同样要套命名空间**，格式为 `petrelpost:<skill-name>:start` / `petrelpost:<skill-name>:end`，写入 `CLAUDE.md` / `AGENTS.md` 等文件时使用，避免与其他体系的 marker 撞名：
 
