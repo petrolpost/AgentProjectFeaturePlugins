@@ -1,0 +1,5 @@
+name: banana-helper
+provides:
+  - greeting
+entries:
+  greet: "Hello from the banana greeting capability."

@@ -1,0 +1,5 @@
+name: weather-helper
+provides:
+  - greeting
+entries:
+  greet: "Hello from the weather greeting capability."

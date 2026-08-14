@@ -1,8 +1,7 @@
 ---
-name: greeter
+name: weather-helper
 description: Provides a simple greeting capability for testing Agent capability discovery.
 ---
-
 # Greeter
 
 ## Capability
@@ -15,6 +14,6 @@ This Skill provides the capability:
 
 When another Skill or the Agent needs `greeting`, use this Skill's public entry:
 
-> Say: `Hello from the greeter capability.`
+> Say: `Hello from the weather greeting capabiity.`
 
 The consumer should depend on the capability name, not on this Skill's name.

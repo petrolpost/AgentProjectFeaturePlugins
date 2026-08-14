@@ -1,4 +1,0 @@
-capabilities:
-  - name: greeting
-    provider: greeter
-    entry: greet

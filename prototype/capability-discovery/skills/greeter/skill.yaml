@@ -1,5 +1,0 @@
-name: greeter
-provides:
-  - greeting
-entries:
-  greet: "Hello from the greeter capability"
